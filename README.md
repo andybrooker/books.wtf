@@ -1,1 +1,3 @@
-# BOOKS.wtf (worth the e*f*fort)
+# BOOKS.wtf
+
+A stylish way to track great books.
