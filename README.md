@@ -1,1 +1,1 @@
-# books.wtf
+# BOOKS.wtf (worth the e*f*fort)
