@@ -119,7 +119,7 @@ const BookListings: FunctionComponent<Props> = (props) => {
         setBooks(sortedDesc);
         break;
     }
-  }, [value]);
+  }, [value, books]);
 
   return (
     <>

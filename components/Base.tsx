@@ -1,6 +1,6 @@
 import { styled } from "../stitches.config";
 import Link from "next/link";
-import { FunctionComponent } from "react";
+import { FC, FunctionComponent, ReactNode } from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { violet, mauve, blackA } from "@radix-ui/colors";
 
@@ -143,13 +143,17 @@ const StyledViewport = styled(SelectPrimitive.Viewport, {
   padding: 5,
 });
 
-function Content({ children, ...props }) {
+interface ContentProps {
+  children?: ReactNode;
+}
+
+const Content: FC<ContentProps> = ({ children, ...props }) => {
   return (
     <SelectPrimitive.Portal>
       <StyledContent {...props}>{children}</StyledContent>
     </SelectPrimitive.Portal>
   );
-}
+};
 
 const StyledItem = styled(SelectPrimitive.Item, {
   all: "unset",
