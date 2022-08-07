@@ -8,6 +8,7 @@ const globalStyles = globalCss({
     fontFamily: "Ranade",
     src: 'url("/fonts/Ranade-Variable.woff2") format("woff2")',
     fontWeight: "100 700",
+    fontDisplay: "swap",
   },
 });
 
