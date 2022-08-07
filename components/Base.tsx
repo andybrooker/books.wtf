@@ -136,11 +136,14 @@ const StyledContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
   backgroundColor: "white",
   boxShadow: "$medium",
-  borderRadius: 1,
+  borderRadius: 6,
 });
 
 const StyledViewport = styled(SelectPrimitive.Viewport, {
   padding: 5,
+  gap: 5,
+  display: "flex",
+  flexDirection: "column",
 });
 
 interface ContentProps {
@@ -160,14 +163,15 @@ const StyledItem = styled(SelectPrimitive.Item, {
   fontSize: "$1",
   fontFamily: "$sans",
   lineHeight: 1,
-  borderRadius: 1,
+  borderRadius: 4,
   display: "flex",
   alignItems: "center",
-  height: 25,
+  height: 35,
   padding: "0 15px",
   position: "relative",
   userSelect: "none",
   fontWeight: 300,
+  backgroundColor: "$gray2",
 
   "&[data-highlighted]": {
     backgroundColor: "$gray4",

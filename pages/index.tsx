@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { styled } from "../stitches.config";
 import {
   Frame,
@@ -68,6 +68,7 @@ const BookListings: FunctionComponent<Props> = (props) => {
     "1": string;
     "2": string;
     "3": string;
+    "4": string;
   };
 
   const sorting: Sorting = {
@@ -75,6 +76,7 @@ const BookListings: FunctionComponent<Props> = (props) => {
     "1": "Author Descending",
     "2": "Year Ascending",
     "3": "Year Descending",
+    "4": "Shuffle",
   };
 
   const [value, setValue] = useState("2");
@@ -94,7 +96,16 @@ const BookListings: FunctionComponent<Props> = (props) => {
     return 0;
   };
 
-  useEffect(() => {
+  const shuffleArray = (array: Book[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+
+    return array;
+  };
+
+  useMemo(() => {
     switch (value) {
       case "0":
         const sortedAtoZ = [...books].sort(sortNamesAtoZ);
@@ -118,8 +129,13 @@ const BookListings: FunctionComponent<Props> = (props) => {
         const sortedDesc = [...books].sort((a, b) => b.year - a.year);
         setBooks(sortedDesc);
         break;
+      case "4":
+        const arrayToShuffle = [...books];
+        const shuffled = shuffleArray(arrayToShuffle);
+        setBooks(shuffled);
+        break;
     }
-  }, [value, books]);
+  }, [value]);
 
   return (
     <>
@@ -153,6 +169,9 @@ const BookListings: FunctionComponent<Props> = (props) => {
               </SelectItem>
               <SelectItem value="3">
                 <SelectItemText>{sorting["3"]}</SelectItemText>
+              </SelectItem>
+              <SelectItem value="4">
+                <SelectItemText>{sorting["4"]}</SelectItemText>
               </SelectItem>
             </SelectViewport>
           </SelectContent>
@@ -206,6 +225,8 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
             "& img": {
               boxShadow: "$medium",
               minWidth: "fit-content !important",
+              maxWidth: "100%",
+              width: "auto !important",
             },
           }}
         >
