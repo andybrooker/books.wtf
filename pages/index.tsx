@@ -199,6 +199,8 @@ const Grid = styled("div", {
 });
 
 const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
+  const [boxShadow, setBoxShadow] = useState(false);
+
   return (
     <Frame>
       <Frame
@@ -223,7 +225,7 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
               overflow: "visible !important",
             },
             "& img": {
-              boxShadow: "$medium",
+              boxShadow: boxShadow ? "$medium" : "",
               minWidth: "fit-content !important",
               width: "auto !important",
             },
@@ -234,6 +236,7 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
             alt={`${title} Book Cover`}
             objectFit="contain"
             layout="fill"
+            onLoadingComplete={() => setBoxShadow(true)}
           />
         </Frame>
       </Frame>
