@@ -9,24 +9,31 @@ export const Navbar: FunctionComponent = () => {
         "@mobile": "mobile",
       }}
     >
-      <Frame>
+      <Frame
+        css={{
+          display: "flex",
+          gap: "14px",
+        }}
+      >
         <Span
           css={{
             fontWeight: 500,
+            userSelect: "none",
           }}
         >
           BOOKS
         </Span>
+        {/* <NavFrame
+          css={{
+            display: "flex",
+            gap: 20,
+          }}
+        >
+          <NavLink href={"/"} name="Classic" />
+          <NavLink href={"/"} name="Contemporary" />
+        </NavFrame> */}
       </Frame>
-      <NavFrame
-        css={{
-          display: "flex",
-          gap: 20,
-        }}
-      >
-        <NavLink href={"/"} name="Classic" />
-        <NavLink href={"/"} name="Contemporary" />
-      </NavFrame>
+
       <Span
         css={{
           color: "$gray9",

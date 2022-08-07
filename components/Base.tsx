@@ -43,7 +43,6 @@ export const Margins = styled(Frame, {
       },
       desktop: {
         maxWidth: "calc(100vw - 200px)",
-        paddingTop: "100px",
       },
     },
   },
@@ -65,18 +64,19 @@ export const Body = styled(Frame, {
 
 export const Header = styled("header", {
   display: "flex",
-  width: "100%",
   justifyContent: "space-between",
-  padding: "12px 16px",
-  borderBottom: "1px solid $gray6",
   variants: {
     display: {
       mobile: {
-        flexDirection: "column",
         gap: "7px",
+        width: "100%",
+        padding: "12px 16px",
       },
       desktop: {
         flexDirection: "row",
+        margin: "0 auto",
+        width: "calc(100vw - 168px)",
+        padding: "28px 16px",
       },
     },
   },
@@ -94,7 +94,7 @@ const LinkStyle = styled("a", {
   fontFamily: "$sans",
   fontWeight: 300,
   fontSize: "$2",
-  color: "inherit",
+  color: "$gray10",
 });
 
 type NavLinkProps = {
