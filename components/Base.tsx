@@ -94,7 +94,11 @@ const LinkStyle = styled("a", {
   fontFamily: "$sans",
   fontWeight: 300,
   fontSize: "$2",
-  color: "$gray10",
+  color: "$gray12",
+  textDecoration: "none",
+  "&:hover": {
+    textDecoration: "underline",
+  },
 });
 
 type NavLinkProps = {

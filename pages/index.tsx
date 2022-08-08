@@ -6,6 +6,7 @@ import { styled } from "../stitches.config";
 import {
   Frame,
   Margins,
+  NavLink,
   Select,
   SelectContent,
   SelectItem,
@@ -26,6 +27,7 @@ type Book = {
   title: string;
   cover_url: string;
   year: number;
+  url: string;
   author: {
     name: string;
   };
@@ -180,6 +182,7 @@ const BookListings: FunctionComponent<Props> = (props) => {
       <Grid>
         {books.map((book, index) => (
           <BookListing
+            url={book.url}
             title={book.title}
             year={book.year}
             cover_url={book.cover_url}
@@ -198,7 +201,12 @@ const Grid = styled("div", {
   gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr));",
 });
 
-const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
+export const BookListing: FunctionComponent<Book> = ({
+  title,
+  cover_url,
+  author,
+  url,
+}) => {
   const [boxShadow, setBoxShadow] = useState(false);
 
   return (
@@ -214,6 +222,11 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
           backgroundColor: "$sand3",
           "&:hover": {
             backgroundColor: "$sand4",
+            transition: "backgroundColor 300ms ease",
+            "& img": {
+              transition: "transform 300ms ease",
+              transform: "translateY(-5px)",
+            },
           },
         }}
       >
@@ -228,6 +241,7 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
               boxShadow: boxShadow ? "$medium" : "",
               minWidth: "0px !important",
               width: "auto !important",
+              transition: "transform 300ms ease",
             },
           }}
         >
@@ -240,15 +254,8 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
           />
         </Frame>
       </Frame>
-      <Frame>
-        <Text
-          size="2"
-          css={{
-            marginBottom: 0,
-          }}
-        >
-          {title}
-        </Text>
+      <Frame css={{ marginTop: "8px" }}>
+        <NavLink name={title} href={`/books/${url}`} />
       </Frame>
       <Frame>
         <Text
@@ -270,7 +277,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let { data: books, error } = await supabase.from("books").select(`
   title,
   year,
-  cover_url, 
+  cover_url,
+  url, 
   author(name)`);
 
   books?.sort((a, b) => a.year - b.year);
