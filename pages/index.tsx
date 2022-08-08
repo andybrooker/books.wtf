@@ -226,7 +226,7 @@ const BookListing: FunctionComponent<Book> = ({ title, cover_url, author }) => {
             },
             "& img": {
               boxShadow: boxShadow ? "$medium" : "",
-              minWidth: "fit-content !important",
+              minWidth: "0px !important",
               width: "auto !important",
             },
           }}
