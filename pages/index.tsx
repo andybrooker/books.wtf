@@ -18,6 +18,8 @@ import {
 } from "../components/Base";
 import { GetStaticProps } from "next";
 import { supabase } from "../utils/supabaseClient";
+import { motion } from "framer-motion";
+import Book from "./books/[id]";
 
 type Props = {
   books: Book[];
@@ -35,7 +37,11 @@ type Book = {
 
 const Home: NextPage<Props> = ({ books }) => {
   return (
-    <div>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <Head>
         <title>BOOKS</title>
         <meta
@@ -44,6 +50,7 @@ const Home: NextPage<Props> = ({ books }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <Frame
         css={{
           width: "100vw",
@@ -58,7 +65,7 @@ const Home: NextPage<Props> = ({ books }) => {
           <BookListings books={books} />
         </Margins>
       </Frame>
-    </div>
+    </motion.main>
   );
 };
 

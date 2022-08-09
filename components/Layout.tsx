@@ -1,6 +1,7 @@
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { Body, Frame } from "./Base";
+import { AnimatePresence } from "framer-motion";
 
 type Props = {
   children: any;
@@ -15,7 +16,7 @@ export const Layout = (props: Props) => {
         }}
       >
         <Navbar />
-        <main>{props.children}</main>
+        <AnimatePresence exitBeforeEnter>{props.children}</AnimatePresence>
       </Frame>
       <Footer />
     </Body>

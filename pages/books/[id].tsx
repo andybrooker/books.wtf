@@ -1,7 +1,9 @@
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import { Frame, Margins } from "../../components/Base";
 import { supabase } from "../../utils/supabaseClient";
+import { motion } from "framer-motion";
 
 interface Props {
   book: {
@@ -17,7 +19,11 @@ interface Props {
 
 const Book: NextPage<Props> = ({ book }) => {
   return (
-    <div>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <Head>
         <title>{book?.title}</title>
         <meta
@@ -36,9 +42,53 @@ const Book: NextPage<Props> = ({ book }) => {
             "@initial": "desktop",
             "@mobile": "mobile",
           }}
-        ></Margins>
+        >
+          <Frame
+            css={{
+              height: "300px",
+              width: "250px",
+              display: "flex",
+              alignItems: "center",
+              "& *": {
+                flexGrow: 1,
+              },
+              backgroundColor: "$sand3",
+              "&:hover": {
+                backgroundColor: "$sand4",
+                transition: "backgroundColor 300ms ease",
+                "& img": {
+                  transition: "transform 300ms ease",
+                  transform: "translateY(-5px)",
+                },
+              },
+            }}
+          >
+            <Frame
+              css={{
+                position: "relative",
+                height: "207px",
+                "& span": {
+                  overflow: "visible !important",
+                },
+                "& img": {
+                  boxShadow: "$medium",
+                  minWidth: "0px !important",
+                  width: "auto !important",
+                  transition: "transform 300ms ease",
+                },
+              }}
+            >
+              <Image
+                src={`https://rfcwposhqmpsheypfwaq.supabase.co/storage/v1/object/public/book-covers/${book.cover_url}`}
+                alt={`${book.title} Book Cover`}
+                objectFit="contain"
+                layout="fill"
+              />
+            </Frame>
+          </Frame>
+        </Margins>
       </Frame>
-    </div>
+    </motion.main>
   );
 };
 

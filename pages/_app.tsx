@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { globalCss } from "@stitches/react";
 import { Layout } from "../components/Layout";
+import { AnimatePresence } from "framer-motion";
 
 const globalStyles = globalCss({
   "@font-face": {
