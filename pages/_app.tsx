@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { globalCss } from "@stitches/react";
 import { Layout } from "../components/Layout";
-import { AnimatePresence } from "framer-motion";
+import Transition from "../components/Transition";
 
 const globalStyles = globalCss({
   "@font-face": {
@@ -17,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Layout>
-      <Component {...pageProps} />
+      <Transition>
+        <Component {...pageProps} />
+      </Transition>
     </Layout>
   );
 }

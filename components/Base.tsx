@@ -88,6 +88,8 @@ export const Footer = styled("footer", {
   display: "flex",
   justifyContent: "center",
   paddingTop: "28px",
+  paddingLeft: "16px",
+  paddingRight: "16px",
 });
 
 const LinkStyle = styled("a", {

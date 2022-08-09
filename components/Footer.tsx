@@ -10,6 +10,7 @@ export const Footer = (props: Props) => {
         css={{
           fontSize: "$1",
           color: "$gray10",
+          textAlign: "center",
         }}
       >
         “A classic is a book that has never finished saying what it has to say.”
