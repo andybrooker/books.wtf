@@ -5,6 +5,7 @@ import { FunctionComponent, useMemo, useState } from "react";
 import { styled } from "../stitches.config";
 import {
   Frame,
+  LinkStyle,
   Margins,
   NavLink,
   Select,
@@ -265,7 +266,13 @@ export const BookListing: FunctionComponent<Book> = ({
         </Frame>
       </Frame>
       <Frame css={{ marginTop: "8px" }}>
-        <NavLink name={title} href={`/books/${url}`} />
+        <LinkStyle
+          target="_blank"
+          rel="noreferrer"
+          href={`https://bookshop.org`}
+        >
+          {title}
+        </LinkStyle>
       </Frame>
       <Frame>
         <Text

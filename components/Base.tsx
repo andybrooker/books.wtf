@@ -92,7 +92,7 @@ export const Footer = styled("footer", {
   paddingRight: "16px",
 });
 
-const LinkStyle = styled("a", {
+export const LinkStyle = styled("a", {
   fontFamily: "$sans",
   fontWeight: 300,
   fontSize: "$2",
