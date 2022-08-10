@@ -7,7 +7,6 @@ import {
   Frame,
   LinkStyle,
   Margins,
-  NavLink,
   Select,
   SelectContent,
   SelectItem,
@@ -20,7 +19,6 @@ import {
 import { GetStaticProps } from "next";
 import { supabase } from "../utils/supabaseClient";
 import { motion } from "framer-motion";
-import Book from "./books/[id]";
 
 type Props = {
   books: Book[];
