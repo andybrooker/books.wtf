@@ -94,7 +94,7 @@ export const Footer = styled("footer", {
 
 export const LinkStyle = styled("a", {
   fontFamily: "$sans",
-  fontWeight: 300,
+  fontWeight: 500,
   fontSize: "$2",
   color: "$gray12",
   textDecoration: "none",
@@ -125,7 +125,26 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   borderRadius: 4,
   padding: "0 15px",
   fontSize: "$1",
-  fontWeight: 300,
+  fontWeight: 400,
+  lineHeight: 1,
+  height: 35,
+  gap: 5,
+  backgroundColor: "$gray2",
+  "&:hover": { backgroundColor: "$gray3" },
+  "&:focus": { backgroundColor: "$gray4" },
+});
+
+export const StyledButton = styled("button", {
+  fontFamily: "$sans",
+  display: "inline-flex",
+  border: "none",
+  cursor: "pointer",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 4,
+  padding: "0 15px",
+  fontSize: "$1",
+  fontWeight: 400,
   lineHeight: 1,
   height: 35,
   gap: 5,
@@ -176,7 +195,7 @@ const StyledItem = styled(SelectPrimitive.Item, {
   padding: "0 15px",
   position: "relative",
   userSelect: "none",
-  fontWeight: 300,
+  fontWeight: 400,
   backgroundColor: "$gray2",
 
   "&[data-highlighted]": {

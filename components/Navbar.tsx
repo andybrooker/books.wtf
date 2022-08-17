@@ -26,7 +26,8 @@ export const Navbar: FunctionComponent = () => {
         <Link href={"/"} passHref>
           <Logo
             css={{
-              fontWeight: 500,
+              fontWeight: 700,
+              letterSpacing: "0.5px",
               textDecoration: "none",
               color: "$gray12",
               userSelect: "none",
@@ -58,6 +59,7 @@ export const Navbar: FunctionComponent = () => {
       <Span
         css={{
           color: "$gray9",
+          fontWeight: 500,
         }}
       >
         Track Progress

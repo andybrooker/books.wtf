@@ -14,14 +14,20 @@ import {
   SelectTrigger,
   SelectValue,
   SelectViewport,
+  StyledButton,
   Text,
 } from "../components/Base";
 import { GetStaticProps } from "next";
-import { supabase } from "../utils/supabaseClient";
 import { motion } from "framer-motion";
+import { getInitialBooks } from "../utils/getInitialBooks";
+import fetcher from "../utils/fetcher";
+import useSWR, { SWRConfig } from "swr";
+import useSWRInfinite from "swr/infinite";
 
 type Props = {
-  books: Book[];
+  fallback: {
+    data: Book[];
+  };
 };
 
 type Book = {
@@ -34,7 +40,7 @@ type Book = {
   };
 };
 
-const Home: NextPage<Props> = ({ books }) => {
+const Home: NextPage<Props> = ({ fallback }) => {
   return (
     <motion.main
       initial={{ opacity: 0, y: 5 }}
@@ -64,7 +70,9 @@ const Home: NextPage<Props> = ({ books }) => {
             "@mobile": "mobile",
           }}
         >
-          <BookListings books={books} />
+          <SWRConfig value={{ fallback }}>
+            <BookListings />
+          </SWRConfig>
         </Margins>
       </Frame>
     </motion.main>
@@ -73,7 +81,7 @@ const Home: NextPage<Props> = ({ books }) => {
 
 export default Home;
 
-const BookListings: FunctionComponent<Props> = (props) => {
+const BookListings: FunctionComponent = () => {
   type Sorting = {
     "0": string;
     "1": string;
@@ -91,62 +99,14 @@ const BookListings: FunctionComponent<Props> = (props) => {
   };
 
   const [value, setValue] = useState("2");
-  const [books, setBooks] = useState(props.books);
-
-  const sortNamesAtoZ = (a: Book, b: Book) => {
-    const nameA = a.author.name.toUpperCase();
-    const nameB = b.author.name.toUpperCase();
-
-    if (nameA < nameB) {
-      return -1;
-    }
-    if (nameA > nameB) {
-      return 1;
-    }
-
-    return 0;
-  };
-
-  const shuffleArray = (array: Book[]) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-
-    return array;
-  };
-
-  useMemo(() => {
-    switch (value) {
-      case "0":
-        const sortedAtoZ = [...books].sort(sortNamesAtoZ);
-        setBooks(sortedAtoZ);
-        break;
-      case "1":
-        const sortedZtoA = [...books].sort((a, b) =>
-          b.author.name.toLowerCase()[0] > a.author.name.toLowerCase()[0]
-            ? 1
-            : a.author.name.toLowerCase()[0] > b.author.name.toLowerCase()[0]
-            ? -1
-            : 0
-        );
-        setBooks(sortedZtoA);
-        break;
-      case "2":
-        const sortedAsc = [...books].sort((a, b) => a.year - b.year);
-        setBooks(sortedAsc);
-        break;
-      case "3":
-        const sortedDesc = [...books].sort((a, b) => b.year - a.year);
-        setBooks(sortedDesc);
-        break;
-      case "4":
-        const arrayToShuffle = [...books];
-        const shuffled = shuffleArray(arrayToShuffle);
-        setBooks(shuffled);
-        break;
-    }
-  }, [value]);
+  const PAGE_SIZE = 20;
+  const { data, size, setSize } = useSWRInfinite<Book[]>(
+    (index) => `/api/books?start=${index}&page_size=${PAGE_SIZE}`,
+    fetcher
+  );
+  const isEmpty = data?.[0]?.length === 0;
+  const isReachingEnd =
+    isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
 
   return (
     <>
@@ -160,7 +120,7 @@ const BookListings: FunctionComponent<Props> = (props) => {
           alignItems: "center",
         }}
       >
-        <Text size="1" color="secondary">
+        <Text size="1" color="secondary" css={{ fontWeight: 400 }}>
           Sort
         </Text>
         <Select value={value} onValueChange={setValue}>
@@ -189,17 +149,34 @@ const BookListings: FunctionComponent<Props> = (props) => {
         </Select>
       </Frame>
       <Grid>
-        {books.map((book, index) => (
-          <BookListing
-            url={book.url}
-            title={book.title}
-            year={book.year}
-            cover_url={book.cover_url}
-            author={book.author}
-            key={index}
-          />
-        ))}
+        {data?.map((array, index) => {
+          return array?.map((book, index) => (
+            <BookListing
+              url={book.url}
+              title={book.title}
+              year={book.year}
+              cover_url={book.cover_url}
+              author={book.author}
+              key={index}
+            />
+          ));
+        })}
       </Grid>
+      <Frame
+        css={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "32px",
+        }}
+      >
+        {!isReachingEnd && (
+          <StyledButton onClick={() => setSize(size + 1)}>
+            Load More
+          </StyledButton>
+        )}
+      </Frame>
     </>
   );
 };
@@ -278,7 +255,7 @@ export const BookListing: FunctionComponent<Book> = ({
           color="secondary"
           css={{
             margin: 0,
-            fontWeight: 300,
+            fontWeight: 400,
           }}
         >
           {author.name}
@@ -289,18 +266,13 @@ export const BookListing: FunctionComponent<Book> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let { data: books, error } = await supabase.from("books").select(`
-  title,
-  year,
-  cover_url,
-  url, 
-  author(name)`);
-
-  books?.sort((a, b) => a.year - b.year);
+  let { data, error } = await getInitialBooks();
 
   return {
     props: {
-      books,
+      fallback: {
+        "/api/books": data,
+      },
     },
     revalidate: 300,
   };

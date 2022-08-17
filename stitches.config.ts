@@ -8,7 +8,7 @@ export const { styled, getCssText } = createStitches({
   theme: {
     fonts: {
       system: 'system-ui',
-      sans: 'Ranade'
+      sans: 'Manrope'
     },
     colors: {
       ...gray,

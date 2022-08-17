@@ -6,8 +6,8 @@ import Transition from "../components/Transition";
 
 const globalStyles = globalCss({
   "@font-face": {
-    fontFamily: "Ranade",
-    src: 'url("/fonts/Ranade-Variable.woff2") format("woff2")',
+    fontFamily: "Manrope",
+    src: 'url("/fonts/Manrope.woff2") format("woff2")',
     fontWeight: "100 700",
   },
 });
