@@ -21,7 +21,7 @@ import { GetStaticProps } from "next";
 import { motion } from "framer-motion";
 import { getInitialBooks } from "../utils/getInitialBooks";
 import fetcher from "../utils/fetcher";
-import useSWR, { SWRConfig } from "swr";
+import useSWR, { SWRConfig, useSWRConfig } from "swr";
 import useSWRInfinite from "swr/infinite";
 
 type Props = {
@@ -100,10 +100,14 @@ const BookListings: FunctionComponent = () => {
 
   const [value, setValue] = useState("2");
   const PAGE_SIZE = 20;
+  const { fallback } = useSWRConfig();
+
   const { data, size, setSize } = useSWRInfinite<Book[]>(
-    (index) => `/api/books?start=${index}&page_size=${PAGE_SIZE}`,
-    fetcher
+    (index) => `/api/books?start=${index}&page_size=20`,
+    fetcher,
+    { fallbackData: [fallback["/api/books?start=0&page_size=20"]] }
   );
+
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
@@ -271,7 +275,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       fallback: {
-        "/api/books": data,
+        "/api/books?start=0&page_size=20": data,
       },
     },
     revalidate: 300,
