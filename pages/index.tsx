@@ -134,7 +134,7 @@ const BookListings: FunctionComponent = () => {
             <SelectViewport>
               {sort_values.map((number, index) => {
                 return (
-                  <SelectItem value={number}>
+                  <SelectItem key={index} value={number}>
                     <SelectItemText>
                       {sorting[number as keyof Sorting]}
                     </SelectItemText>
