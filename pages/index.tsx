@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { FunctionComponent, useMemo, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { styled } from "../stitches.config";
 import {
   Frame,
@@ -35,9 +35,7 @@ type Book = {
   cover_url: string;
   year: number;
   url: string;
-  author: {
-    name: string;
-  };
+  name: string;
 };
 
 const Home: NextPage<Props> = ({ fallback }) => {
@@ -87,7 +85,6 @@ const BookListings: FunctionComponent = () => {
     "1": string;
     "2": string;
     "3": string;
-    "4": string;
   };
 
   const sorting: Sorting = {
@@ -95,15 +92,15 @@ const BookListings: FunctionComponent = () => {
     "1": "Author Descending",
     "2": "Year Ascending",
     "3": "Year Descending",
-    "4": "Shuffle",
   };
 
   const [value, setValue] = useState("2");
   const PAGE_SIZE = 20;
+
   const { fallback } = useSWRConfig();
 
   const { data, size, setSize } = useSWRInfinite<Book[]>(
-    (index) => `/api/books?start=${index}&page_size=20`,
+    (index) => `/api/books?start=${index}&page_size=20&sort=${value}`,
     fetcher,
     { fallbackData: [fallback["/api/books?start=0&page_size=20"]] }
   );
@@ -111,6 +108,8 @@ const BookListings: FunctionComponent = () => {
   const isEmpty = data?.[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+
+  const sort_values = ["0", "1", "2", "3"];
 
   return (
     <>
@@ -133,21 +132,15 @@ const BookListings: FunctionComponent = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectViewport>
-              <SelectItem value="0">
-                <SelectItemText>{sorting["0"]}</SelectItemText>
-              </SelectItem>
-              <SelectItem value="1">
-                <SelectItemText>{sorting["1"]}</SelectItemText>
-              </SelectItem>
-              <SelectItem value="2">
-                <SelectItemText>{sorting["2"]}</SelectItemText>
-              </SelectItem>
-              <SelectItem value="3">
-                <SelectItemText>{sorting["3"]}</SelectItemText>
-              </SelectItem>
-              <SelectItem value="4">
-                <SelectItemText>{sorting["4"]}</SelectItemText>
-              </SelectItem>
+              {sort_values.map((number, index) => {
+                return (
+                  <SelectItem value={number}>
+                    <SelectItemText>
+                      {sorting[number as keyof Sorting]}
+                    </SelectItemText>
+                  </SelectItem>
+                );
+              })}
             </SelectViewport>
           </SelectContent>
         </Select>
@@ -160,7 +153,7 @@ const BookListings: FunctionComponent = () => {
               title={book.title}
               year={book.year}
               cover_url={book.cover_url}
-              author={book.author}
+              name={book.name}
               key={index}
             />
           ));
@@ -194,7 +187,7 @@ const Grid = styled("div", {
 export const BookListing: FunctionComponent<Book> = ({
   title,
   cover_url,
-  author,
+  name,
   url,
 }) => {
   const [boxShadow, setBoxShadow] = useState(false);
@@ -245,11 +238,7 @@ export const BookListing: FunctionComponent<Book> = ({
         </Frame>
       </Frame>
       <Frame css={{ marginTop: "8px" }}>
-        <LinkStyle
-          target="_blank"
-          rel="noreferrer"
-          href={`https://bookshop.org`}
-        >
+        <LinkStyle target="_blank" rel="noreferrer" href={url}>
           {title}
         </LinkStyle>
       </Frame>
@@ -262,7 +251,7 @@ export const BookListing: FunctionComponent<Book> = ({
             fontWeight: 400,
           }}
         >
-          {author.name}
+          {name}
         </Text>
       </Frame>
     </Frame>

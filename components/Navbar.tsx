@@ -26,6 +26,7 @@ export const Navbar: FunctionComponent = () => {
         <Link href={"/"} passHref>
           <Logo
             css={{
+              display: "flex",
               fontWeight: 700,
               letterSpacing: "0.5px",
               textDecoration: "none",
