@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { FunctionComponent, useState } from "react";
 import { styled } from "../stitches.config";
+import styles from "../styles/Home.module.css";
 import {
   Frame,
   LinkStyle,
@@ -119,33 +120,44 @@ const BookListings: FunctionComponent = () => {
           width: "100%",
           display: "flex",
           gap: "14px",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <Text size="1" color="secondary" css={{ fontWeight: 400 }}>
-          Sort
+        <Text color="secondary" style={{ fontWeight: 500 }}>
+          A classic is a book that has never finished saying what it has to say.
         </Text>
-        <Select value={value} onValueChange={setValue}>
-          <SelectTrigger aria-label="Sort By">
-            <SelectValue>{sorting[value as keyof Sorting]}</SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectViewport>
-              {sort_values.map((number, index) => {
-                return (
-                  <SelectItem key={index} value={number}>
-                    <SelectItemText>
-                      {sorting[number as keyof Sorting]}
-                    </SelectItemText>
-                  </SelectItem>
-                );
-              })}
-            </SelectViewport>
-          </SelectContent>
-        </Select>
+        <Frame
+          css={{
+            display: "flex",
+            gap: "14px",
+            alignItems: "center",
+          }}
+        >
+          <Text size="1" color="secondary" css={{ fontWeight: 400 }}>
+            Sort
+          </Text>
+          <Select value={value} onValueChange={setValue}>
+            <SelectTrigger aria-label="Sort By">
+              <SelectValue>{sorting[value as keyof Sorting]}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectViewport>
+                {sort_values.map((number, index) => {
+                  return (
+                    <SelectItem key={index} value={number}>
+                      <SelectItemText>
+                        {sorting[number as keyof Sorting]}
+                      </SelectItemText>
+                    </SelectItem>
+                  );
+                })}
+              </SelectViewport>
+            </SelectContent>
+          </Select>
+        </Frame>
       </Frame>
-      <Grid>
+      <Grid className={styles.animate}>
         {data?.map((array, index) => {
           return array?.map((book, index) => (
             <BookListing
