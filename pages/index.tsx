@@ -146,7 +146,7 @@ const BookListings: FunctionComponent = () => {
           </SelectContent>
         </Select>
       </Frame>
-      <Grid>
+      <Grid className={styles.animate}>
         {data?.map((array, index) => {
           return array?.map((book, index) => (
             <BookListing
