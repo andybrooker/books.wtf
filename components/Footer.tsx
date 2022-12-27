@@ -13,7 +13,7 @@ export const Footer = (props: Props) => {
           textAlign: "center",
         }}
       >
-        Curated by @andy_brooker. Inspired by Tommy Collison.
+        “A classic is a book that has never finished saying what it has to say.”
       </Text>
     </Foot>
   );
