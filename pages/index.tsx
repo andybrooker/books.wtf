@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import { getInitialBooks } from "../utils/getInitialBooks";
 import fetcher from "../utils/fetcher";
 import useSWR, { SWRConfig, useSWRConfig } from "swr";
+import styles from "../styles/Home.module.css";
 import useSWRInfinite from "swr/infinite";
 
 type Props = {
@@ -145,7 +146,7 @@ const BookListings: FunctionComponent = () => {
           </SelectContent>
         </Select>
       </Frame>
-      <Grid>
+      <Grid className={styles.animate}>
         {data?.map((array, index) => {
           return array?.map((book, index) => (
             <BookListing
