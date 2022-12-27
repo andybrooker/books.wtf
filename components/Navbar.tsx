@@ -1,7 +1,8 @@
+import { useUser } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { FunctionComponent } from "react";
 import { styled } from "../stitches.config";
-import { Frame, Header, NavFrame, NavLink, Span } from "./Base";
+import { Frame, Header, LinkStyle, NavFrame, NavLink, Span } from "./Base";
 
 const Logo = styled("a", {
   fontFamily: "$sans",
@@ -10,6 +11,8 @@ const Logo = styled("a", {
 });
 
 export const Navbar: FunctionComponent = () => {
+  const user = useUser();
+
   return (
     <Header
       display={{
@@ -45,16 +48,6 @@ export const Navbar: FunctionComponent = () => {
             BOOKS
           </Logo>
         </Link>
-
-        {/* <NavFrame
-          css={{
-            display: "flex",
-            gap: 20,
-          }}
-        >
-          <NavLink href={"/"} name="Classic" />
-          <NavLink href={"/"} name="Contemporary" />
-        </NavFrame> */}
       </Frame>
 
       <Span
@@ -63,8 +56,39 @@ export const Navbar: FunctionComponent = () => {
           fontWeight: 500,
         }}
       >
-        Track Progress
+        {" "}
+        {user ? <ProfileLink /> : <SignIn />}
       </Span>
     </Header>
+  );
+};
+
+const SignIn = () => {
+  return (
+    <Link href={"/signin"}>
+      <LinkStyle
+        css={{
+          color: "inherit",
+          cursor: "pointer",
+        }}
+      >
+        Join the Community
+      </LinkStyle>
+    </Link>
+  );
+};
+
+const ProfileLink = () => {
+  return (
+    <Link href={"/profile"}>
+      <LinkStyle
+        css={{
+          color: "inherit",
+          cursor: "pointer",
+        }}
+      >
+        Profile
+      </LinkStyle>
+    </Link>
   );
 };

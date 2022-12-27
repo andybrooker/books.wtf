@@ -190,8 +190,6 @@ export const BookListing: FunctionComponent<Book> = ({
   name,
   url,
 }) => {
-  const [boxShadow, setBoxShadow] = useState(false);
-
   return (
     <Frame>
       <Frame
@@ -213,29 +211,7 @@ export const BookListing: FunctionComponent<Book> = ({
           },
         }}
       >
-        <Frame
-          css={{
-            position: "relative",
-            height: "207px",
-            "& span": {
-              overflow: "visible !important",
-            },
-            "& img": {
-              boxShadow: boxShadow ? "$medium" : "",
-              minWidth: "0px !important",
-              width: "auto !important",
-              transition: "transform 300ms ease",
-            },
-          }}
-        >
-          <Image
-            src={`https://rfcwposhqmpsheypfwaq.supabase.co/storage/v1/object/public/book-covers/${cover_url}`}
-            alt={`${title} Book Cover`}
-            objectFit="contain"
-            layout="fill"
-            onLoadingComplete={() => setBoxShadow(true)}
-          />
-        </Frame>
+        <BookFrame height={207} title={title} cover_url={cover_url} />
       </Frame>
       <Frame css={{ marginTop: "8px" }}>
         <LinkStyle target="_blank" rel="noreferrer" href={url}>
@@ -254,6 +230,46 @@ export const BookListing: FunctionComponent<Book> = ({
           {name}
         </Text>
       </Frame>
+    </Frame>
+  );
+};
+
+type BookFrameProps = {
+  title: string;
+  cover_url: string;
+  height: number;
+};
+
+export const BookFrame: FunctionComponent<BookFrameProps> = ({
+  title,
+  cover_url,
+  height,
+}) => {
+  const [boxShadow, setBoxShadow] = useState(false);
+
+  return (
+    <Frame
+      css={{
+        position: "relative",
+        height: `${height}px`,
+        "& span": {
+          overflow: "visible !important",
+        },
+        "& img": {
+          boxShadow: boxShadow ? "$medium" : "",
+          minWidth: "0px !important",
+          width: "auto !important",
+          transition: "transform 300ms ease",
+        },
+      }}
+    >
+      <Image
+        src={`https://rfcwposhqmpsheypfwaq.supabase.co/storage/v1/object/public/book-covers/${cover_url}`}
+        alt={`${title} Book Cover`}
+        objectFit="contain"
+        layout="fill"
+        onLoadingComplete={() => setBoxShadow(true)}
+      />
     </Frame>
   );
 };
